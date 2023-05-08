@@ -6,6 +6,7 @@ import time
 import math
 import tempfile
 from pynput import keyboard
+import numpy as np 
 
 
 client = airsim.VehicleClient()
@@ -18,22 +19,20 @@ image_index = 0
 def save_view(pressed_key):
     global image_index
     responses = client.simGetImages([
-            # airsim.ImageRequest("0", airsim.ImageType.DepthVis),
-            # airsim.ImageRequest("0", airsim.ImageType.DepthPlanar, True),
-            # airsim.ImageRequest("0", airsim.ImageType.DepthPerspective),
-        airsim.ImageRequest("0", airsim.ImageType.Scene),
-            # airsim.ImageRequest("0", airsim.ImageType.Infrared)
+        airsim.ImageRequest("0", airsim.ImageType.Scene, False, False),
     ])
-        
-    for response in responses:
-        if response.pixels_as_float:
-            print("Type %d, size %d" % (response.image_type, len(response.image_data_float)))
-            airsim.write_pfm(os.path.normpath('datapy' + str(image_index)+'_'+ str(pressed_key)+ '.pfm'), airsim.get_pfm_array(response))
-        else:
-            print("Type %d, size %d" % (response.image_type, len(response.image_data_uint8)))
-            airsim.write_file(os.path.normpath('data\py' + str(image_index)+ '_'+ str(pressed_key)+ '.png'), response.image_data_uint8)
-        image_index+= 1
 
+    response = responses[0]
+    
+    # the original image has 4 channels. So the below code will make it RGB (3 channels)
+    img1d = np.fromstring(response.image_data_uint8, dtype=np.uint8)
+
+    # reshape array to 3 channel image array H X W X 3
+    img_rgb = img1d.reshape(response.height, response.width, 3) 
+
+    # write to png 
+    airsim.write_png(os.path.normpath('data\py' + str(image_index)+ '_'+ str(pressed_key)+ '.png'), img_rgb) 
+    image_index+= 1
 
 def on_key_press(key):
     global i
