@@ -31,7 +31,7 @@ def save_view(pressed_key):
     img_rgb = img1d.reshape(response.height, response.width, 3) 
 
     # write to png 
-    airsim.write_png(os.path.normpath('data\py' + str(image_index)+ '_'+ str(pressed_key)+ '.png'), img_rgb) 
+    airsim.write_png(os.path.normpath('validation\py' + str(image_index)+ '_'+ str(pressed_key)+ '.png'), img_rgb) 
     image_index+= 1
 
 def on_key_press(key_char):
@@ -64,8 +64,8 @@ def on_key_press(key_char):
     print(client.simGetVehiclePose())  
     return executed
 
-
-number_of_dataset = 128000
+#Select the no of frame you want to collect
+number_of_dataset = 1280
 keys = ['w','a','d']
 current_i = 0 
 while current_i<number_of_dataset:
