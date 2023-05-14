@@ -29,3 +29,13 @@ Install jupyter lab and run the local jupyter server by following the [instructi
 ## Step 5 
 
 Open the `IDM.ipynb` file. Configure the adjustable variables and then run the script.  
+
+# For custom data generation 
+
+## Step 1
+
+Setup Airsim on Unreal Engine using the instructions here - [Windows](https://microsoft.github.io/AirSim/build_windows/), [Linux](https://microsoft.github.io/AirSim/build_linux/), [macOS](https://microsoft.github.io/AirSim/build_macos/) 
+
+## Step 2
+
+Run the airsim in [computer vision](https://microsoft.github.io/AirSim/image_apis/) mode. And run either `DataCollectionPipeline.py` for keyboard controlled data collection or `RandomDataCollectionPipeline.py` for automated data collection. 
